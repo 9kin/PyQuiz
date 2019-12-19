@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PlayerGameWindow Module &mdash; документация PyQuiz 1.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/quiz.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/quiz.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PlayerGameWindow</span></code> Module</a></li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyQuiz</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li><code class="xref py py-mod docutils literal notranslate"><span class="pre">PlayerGameWindow</span></code> Module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/test.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <span class="target" id="module-PlayerGameWindow"></span><div class="section" id="playergamewindow-module">
+<h1><a class="reference internal" href="#module-PlayerGameWindow" title="PlayerGameWindow"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PlayerGameWindow</span></code></a> Module<a class="headerlink" href="#playergamewindow-module" title="Ссылка на этот заголовок">¶</a></h1>
+<p>Класс <a class="reference internal" href="#module-PlayerGameWindow" title="PlayerGameWindow"><code class="xref py py-mod docutils literal notranslate"><span class="pre">PlayerGameWindow</span></code></a> включает в себя отрисовку окон игрока таких как:</p>
+<ul class="simple">
+<li><p>Подключение</p></li>
+<li><p>Ответ (кнопки разного цвета)</p></li>
+<li><p>Результат (правильно/неправильно, рейтинг и место игрока)</p></li>
+<li><p>Ожидание</p></li>
+</ul>
+<dl class="function">
+<dt id="PlayerGameWindow.delete_all_windgets">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">delete_all_windgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.delete_all_windgets" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Удляет все виджеты вызывая все функции:</p>
+<blockquote>
+<div><dl class="function">
+<dt id="PlayerGameWindow.delete_answer_windgets">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">delete_answer_windgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.delete_answer_windgets" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Удаляет все виджеты окна с ответами</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.delete_waiting_wingets">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">delete_waiting_wingets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.delete_waiting_wingets" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Удаляет все виджеты окна ожидания</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.delete_true_false_wingets">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">delete_true_false_wingets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.delete_true_false_wingets" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Удаляет все виджеты окна с результатом</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.delete_connect_windgets">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">delete_connect_windgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.delete_connect_windgets" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Удляет все виджеты окна подключения</p>
+</dd></dl>
+
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.answer_window">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">answer_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.answer_window" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Отрисовка окна ответа (кнопки разного цвета), используя <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.waiting_window">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">waiting_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.waiting_window" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Отрисовка ожидания, используя <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code> и <code class="docutils literal notranslate"><span class="pre">QLabel</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.true_false_window">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">true_false_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.true_false_window" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Отрисовка Результата (правильно/неправильно, рейтинг и место игрока), используя <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code> и <code class="docutils literal notranslate"><span class="pre">QLabel</span></code>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.connect_window">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">connect_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.connect_window" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Отрисовка Результата (правильно/неправильно, рейтинг и место игрока), используя <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code> и <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code> и <code class="docutils literal notranslate"><span class="pre">QLineEdit</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.game_end">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">game_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.game_end" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Открывает новое окно <code class="docutils literal notranslate"><span class="pre">StartWindow</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.thread_signal">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">thread_signal</code><span class="sig-paren">(</span><em class="sig-param">game</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.thread_signal" title="Ссылка на это определение">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game</dt>
+<dd class="field-odd"><p>pin игры 6 значный</p>
+</dd>
+<dt class="field-even">Name</dt>
+<dd class="field-even"><p>имя игрока</p>
+</dd>
+</dl>
+<p>Подключени к серверу. Открытие потока <code class="docutils literal notranslate"><span class="pre">PlayerThread</span></code>. После завершения работы потока вызывается <code class="docutils literal notranslate"><span class="pre">on_finished()</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.change_window">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">change_window</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.change_window" title="Ссылка на это определение">¶</a></dt>
+<dd><div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">change_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="n">s</span>
+    <span class="n">arguments</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">arguments</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Value</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">list</span> <span class="pre">[function,</span> <span class="pre">param1,</span> <span class="pre">param2,</span> <span class="pre">..]</span></code></p>
+</dd>
+</dl>
+<p>Запускает вункцию, нужна для управления из потока с помощью <code class="docutils literal notranslate"><span class="pre">pyqtSignal(list)</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.on_finished">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">on_finished</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.on_finished" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Функция, которая запускается после завершения работы потока. Вызывает <code class="docutils literal notranslate"><span class="pre">connect_window()</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.click">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.click" title="Ссылка на это определение">¶</a></dt>
+<dd><div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sender</span><span class="p">()</span><span class="o">.</span><span class="n">objectName</span><span class="p">())</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">waiting_window</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">ans</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Запускается при нажатие кнопки ответа</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.connect">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">connect</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.connect" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Запускает <code class="docutils literal notranslate"><span class="pre">self.thread_signal(game,</span> <span class="pre">name)</span></code> <code class="docutils literal notranslate"><span class="pre">game</span></code> и <code class="docutils literal notranslate"><span class="pre">name</span></code> взятые из окна <code class="docutils literal notranslate"><span class="pre">connect_window</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="PlayerGameWindow.exit">
+<code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">exit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#PlayerGameWindow.exit" title="Ссылка на это определение">¶</a></dt>
+<dd><p>Открывает новое окно <code class="docutils literal notranslate"><span class="pre">StartWindow</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="PlayerGameWindow.PlayerThread">
+<em class="property">class </em><code class="sig-prename descclassname">PlayerGameWindow.</code><code class="sig-name descname">PlayerThread</code><a class="headerlink" href="#PlayerGameWindow.PlayerThread" title="Ссылка на это определение">¶</a></dt>
+<dd><div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PlayerThread</span><span class="p">(</span><span class="n">QThread</span><span class="p">):</span>
+    <span class="n">Signal</span> <span class="o">=</span> <span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window</span> <span class="o">=</span> <span class="n">window</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game</span> <span class="o">=</span> <span class="n">game</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">PlayerAPI</span><span class="p">(</span><span class="n">URL</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">hash_error</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">error</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">waiting_window</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">question_cnt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">game_info</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">question_cnt</span><span class="p">):</span>
+            <span class="n">info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">question_info</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">answer_window</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+            <span class="n">QtTest</span><span class="o">.</span><span class="n">QTest</span><span class="o">.</span><span class="n">qWait</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">Signal</span><span class="o">.</span><span class="n">emit</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">true_false_window</span><span class="p">,</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;valid&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;place&quot;</span><span class="p">],</span> <span class="n">res</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]])</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">!=</span> <span class="n">question_cnt</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">window</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">QtTest</span><span class="o">.</span><span class="n">QTest</span><span class="o">.</span><span class="n">qWait</span><span class="p">(</span><span class="mi">2000</span><span class="p">)</span> <span class="c1"># 2 s</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, 9kin
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
