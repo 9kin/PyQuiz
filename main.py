@@ -2,9 +2,10 @@ import api
 import json
 import sys
 import os
-
+import webbrowser
 
 from typing import List, Tuple
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt, QTime, QTimer, QBasicTimer, QSize, QThread, pyqtSlot
 from PyQt5.QtGui import QIcon
@@ -18,17 +19,7 @@ import sip
 
 COORDS = [200, 200]
 
-from config_stuff import *
-
-import datetime
-import api
-from PyQt5 import QtTest
-
-conf = load_config()
-COORDS = [200, 200]
-
 URL = 'http://127.0.0.1:8000'
-
 
 def showMsg(s, type=QMessageBox.Critical):
     msg = QMessageBox()
@@ -66,7 +57,7 @@ class PlayerThread(QThread):
                 self.window.API.wait()
         QtTest.QTest.qWait(2000) # 2 s
 
-class PlayGameWindow(QWidget):
+class PlayerGameWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.move(*COORDS)
@@ -264,7 +255,6 @@ class PlayGameWindow(QWidget):
     def on_finished(self):
         self.thread.Signal.disconnect(self.change_window)
         self.thread.finished.disconnect(self.on_finished)
-        self.connect_window_exit
         self.connect_window()
 
     def click(self):
@@ -288,7 +278,7 @@ class PlayGameWindow(QWidget):
         self.start_window.show()
         self.close()
 
-#######################
+####################### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 class HostThread(QThread):
     Signal = pyqtSignal(list)
 
@@ -297,14 +287,14 @@ class HostThread(QThread):
         self.host, self.window = host, window
 
     def run(self):
-        global curent_window
+        
         self.window.API = api.HostAPI(self.host, self.window.quiz)
         id_ =  str(self.window.API.id)
-        curent_window = self.window.person_waiting_window
-        while curent_window == self.window.person_waiting_window:
+        self.window.curent_window = self.window.person_waiting_window
+        while self.window.curent_window == self.window.person_waiting_window:
             self.Signal.emit([self.window.person_waiting_window, self.window.name, id_, self.window.API.get_peoples()])
             c = 0
-            while c < 20 and curent_window == self.window.person_waiting_window:
+            while c < 20 and self.window.curent_window == self.window.person_waiting_window:
                QtTest.QTest.qWait(50) # 2 s
                c += 1
 
@@ -319,17 +309,17 @@ class HostThread(QThread):
                 curent_question["answers"],
                 curent_question["time"]]
             )
-            while curent_window == self.window.question_window:
+            while self.window.curent_window == self.window.question_window:
                 pass
             self.Signal.emit([self.window.true_answer_window,
                 curent_question["question"],
                 curent_question["answers"][curent_question["true"]],
                 curent_question["true"]]
             )
-            while curent_window == self.window.true_answer_window:
+            while self.window.curent_window == self.window.true_answer_window:
                 pass
             self.Signal.emit([self.window.raiting_window, self.window.API.get_raiting()])
-            while curent_window == self.window.raiting_window:
+            while self.window.curent_window == self.window.raiting_window:
                 pass
             cur += 1
             self.window.API.next()
@@ -344,6 +334,7 @@ class Host(QWidget):
         self.name = quiz['name']
         del quiz['name']
         self.quiz = quiz
+        self.curent_window =None
         self.API = None
         self.question_button = None
         self.timer = None
@@ -553,16 +544,13 @@ class Host(QWidget):
         self.setFixedSize(1000, 480)
 
     def to_raiting(self):
-        global curent_window
-        curent_window = self.raiting_window
+        self.curent_window = self.raiting_window
 
     def to_question(self):
-        global curent_window
-        curent_window = self.question_window
+        self.curent_window = self.question_window
 
     def to_true_false(self):
-        global curent_window
-        curent_window = self.true_answer_window
+        self.curent_window = self.true_answer_window
 
     def person_waiting_window(self, quiz_title, pin, peoples):
         self.delete_all_windgets()
@@ -610,8 +598,7 @@ class Host(QWidget):
             showMsg('нет людей')
             return
 
-        global curent_window
-        curent_window = self.question_window
+        self.curent_window = self.question_window
 
     def thread_signal(self, url):
         self.thread = HostThread(url, self)
@@ -1056,6 +1043,7 @@ class StartWindow(QWidget):
         self.play_btn.move(0, 100)
         self.host_btn.resize(300, 100)
         self.host_btn.move(0, 200)
+
         self.help_btn = QPushButton(self)
         self.help_btn.resize(50, 50)
         self.help_btn.setIcon(QIcon('assets/question.png'))
@@ -1068,7 +1056,8 @@ class StartWindow(QWidget):
         self.settngs_btn.setIconSize(QSize(40, 40))
         self.settngs_btn.move(250, 0)
 
-
+        self.settngs_btn.clicked.connect(self.open_settings)
+        self.help_btn.clicked.connect(self.open_help)
         self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
         self.setFixedSize(300, 300)
 
@@ -1087,10 +1076,25 @@ class StartWindow(QWidget):
         self.play_btn.clicked.connect(self.start_game)
         self.host_btn.clicked.connect(self.create_game)
 
+
+    def open_settings(self):
+        global URL
+        new_url, okBtnPressed = QInputDialog.getText(self, "Настройки", 
+                                               "Введите url хоста")
+        if okBtnPressed:
+            URL = new_url
+
+    def open_help(self):
+        global COORDS
+        COORDS = [self.x(), self.y()]
+        self.help_window = HelpWindow()
+        self.help_window.show()
+        self.close()
+
     def start_game(self):
         global COORDS
         COORDS = [self.x(), self.y()]
-        self.game_window = PlayGameWindow()
+        self.game_window = PlayerGameWindow()
         self.game_window.show()
         self.close()
 
@@ -1109,38 +1113,52 @@ class HelpWindow(QWidget):
     def initUI(self):
         self.move(*COORDS)
         self.setWindowTitle('pyQuiz')
-
         self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
         self.setFixedSize(300, 300)
-
+        hbox = QHBoxLayout()
+        pixmap = QPixmap('assets/quiz.png')
+        pixmap = pixmap.scaled(150, 150)
+        label = QLabel()
+        label.setPixmap(pixmap)
+        about = QLabel()
+        about.setText('PyQuiz v 1.0.0\nPyQuiz - система проведения онлайн-викторин написанная на Python 3 с использованием библиотек PyQt, fastapi.\n9kin and Avevad')
+        
+        about.setWordWrap(True)
+        about.setStyleSheet("""QLabel {font-size: 12px; background-color: #3C3F41; color: #BBBBBB;}  """)
+        self.repo_btn = QPushButton('PyQuiz repo')
+        self.doc_btn = QPushButton('PyQuiz doc')
+        self.back_btn = QPushButton('back')
+        hbox.addWidget(label)
+        hbox.addWidget(about)
         vbox = QVBoxLayout()
-
-        vbox.addWidget(QPushButton())
-
-        l = QLabel()
-        l.setText('PyQuiz v 1.0.0\nPyQuiz - система проведения онлайн-викторин написанная на Python 3 с использованием библиотек PyQt, FastAPI.')
-       # l.setFixedWidth(300)
-        l.setWordWrap(True)
-        l.setStyleSheet('QLabel {font-size: 14px; background-color: #3C3F41; color: #BBBBBB;}')
-
-
-        vbox.addWidget(l)
-
-     
-
+        vbox.addLayout(hbox)
+        vbox.addWidget(self.repo_btn)
+        vbox.addWidget(self.doc_btn)
+        vbox.addWidget(self.back_btn)
+        self.repo_btn.clicked.connect(self.repo)
+        self.doc_btn.clicked.connect(self.doc)
+        self.back_btn.clicked.connect(self.back)
         self.setLayout(vbox)
-
         self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
 
+    def repo(self):
+        webbrowser.open('https://github.com/9kin/PyQuiz')
 
+    def doc(self):
+        webbrowser.open('https://github.com/9kin/PyQuiz')
 
-
+    def back(self):
+        global COORDS
+        COORDS = [self.x(), self.y()]
+        self.start_window_window = StartWindow()
+        self.start_window_window.show()
+        self.close()
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     
     ex = StartWindow()
-    ex = HelpWindow()
+    #ex = HelpWindow()
     
     ex.show()
     sys.exit(app.exec())
