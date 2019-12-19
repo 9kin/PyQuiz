@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="ru" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="ru" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>server_api &mdash; документация PyQuiz 1.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/quiz.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Алфавитный указатель" href="genindex.html" />
+    <link rel="search" title="Поиск" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html">
+          
+
+          
+            
+            <img src="_static/quiz.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">server_api</a><ul>
+<li><a class="reference internal" href="#host">host</a></li>
+<li><a class="reference internal" href="#client">client</a></li>
+</ul>
+</li>
+</ul>
+</div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">PyQuiz</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>server_api</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/server_api.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="server-api">
+<h1>server_api<a class="headerlink" href="#server-api" title="Ссылка на этот заголовок">¶</a></h1>
+<p><strong>server_api</strong> - клиент, написанный с использованием библиотеки <a class="reference external" href="https://github.com/tiangolo/fastapi">fastapi</a>.</p>
+<p>Для реализации удобного взаимодейтвия есть файл  <code class="docutils literal notranslate"><span class="pre">api.py</span></code> который  содерэит PlayerAPI, HostAPI с помощью запросов на сервер</p>
+<p>В данном файле</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">host_map</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># словарь ключ которого pin</span>
+<span class="n">empty_hosts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">([</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100001</span><span class="p">,</span> <span class="mi">1000000</span><span class="p">)])</span> <span class="c1"># свободные хосты</span>
+</pre></div>
+</div>
+<p>Пример <code class="docutils literal notranslate"><span class="pre">hostmap</span></code> при одной открытой игре и одном игроке подключенном к ней.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;100001&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;c14c536d2c09dbb59d279ec0cd4bffa20b2615db&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;last_active&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-12-19T22:02:03.591276&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;question_cnt&quot;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+    <span class="nt">&quot;peoples&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;7b6e01d931302c93899756bb5f34e1c8fdc777a8&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;score&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="nt">&quot;last_active&quot;</span><span class="p">:</span> <span class="s2">&quot;2019-12-19T22:02:17.455739&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;9kin&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;last&quot;</span><span class="p">:</span> <span class="p">{</span>
+          <span class="nt">&quot;ans&quot;</span><span class="p">:</span> <span class="mi">-1</span><span class="p">,</span>
+          <span class="nt">&quot;res&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+          <span class="nt">&quot;add&quot;</span><span class="p">:</span> <span class="mi">0</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;quiz&quot;</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">&quot;0&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;answers&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;4&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;5&quot;</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;2 + 2 = ?&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;score&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="nt">&quot;true&quot;</span><span class="p">:</span> <span class="mi">1</span>
+      <span class="p">},</span>
+      <span class="nt">&quot;1&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;answers&quot;</span><span class="p">:</span> <span class="p">[</span>
+          <span class="s2">&quot;6&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;7&quot;</span>
+        <span class="p">],</span>
+        <span class="nt">&quot;question&quot;</span><span class="p">:</span> <span class="s2">&quot;2 * 2 + 2 = ?&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;score&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="nt">&quot;time&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="nt">&quot;true&quot;</span><span class="p">:</span> <span class="mi">0</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">key</span></code> - код 20 знаков для подтверждения действий</p>
+<p><code class="docutils literal notranslate"><span class="pre">last_active</span></code> - удобно для дебага</p>
+<p><code class="docutils literal notranslate"><span class="pre">question_cnt</span></code> - текущий вопрос. (-1 ожидание игроков)</p>
+<p><code class="docutils literal notranslate"><span class="pre">peoples</span></code> - Словарь подключенных людей.ключ <code class="docutils literal notranslate"><span class="pre">key</span></code> которыый даётся при подключенние к игре.</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">score</span></code> - текущие очки (до этого вопроса)</p>
+<p><code class="docutils literal notranslate"><span class="pre">last_active</span></code> - удобно для дебага</p>
+<p><code class="docutils literal notranslate"><span class="pre">name</span></code> - имя</p>
+<p><code class="docutils literal notranslate"><span class="pre">last</span></code> - словарь последнего ответа</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">ans</span></code> - ответ на последний вопрос (n/-1; -1 не ответил)</p>
+<p><code class="docutils literal notranslate"><span class="pre">res</span></code> - результат (True/False)</p>
+<p><code class="docutils literal notranslate"><span class="pre">add</span></code> - изменение рейтинга после окончание данного вопроса</p>
+</div></blockquote>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">quiz</span></code> - словарь с содержимом викторины</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">n</span></code> - n вопрос 0,1,2,3….</p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">answers</span></code> - массив ответов</p>
+<p><code class="docutils literal notranslate"><span class="pre">question</span></code> - вопрос</p>
+<p><code class="docutils literal notranslate"><span class="pre">score</span></code> - max балл за этот вопрос</p>
+<p><code class="docutils literal notranslate"><span class="pre">time</span></code> - время на вопрос</p>
+<p><code class="docutils literal notranslate"><span class="pre">true</span></code> - правильный ответ индекс</p>
+</div></blockquote>
+</div></blockquote>
+<p>В сервере на неправильные данные или если ошибка возвращается <code class="docutils literal notranslate"><span class="pre">HTTPException(status_code=404,</span> <span class="pre">detail=&quot;error&quot;)</span></code></p>
+<div class="section" id="host">
+<h2>host<a class="headerlink" href="#host" title="Ссылка на этот заголовок">¶</a></h2>
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/status&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ хоста</p>
+</dd>
+</dl>
+<p>Возвращает все данные игры с номером <code class="docutils literal notranslate"><span class="pre">game_id</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/host&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Quiz</dt>
+<dd class="field-odd"><p>(str) json объект который в примере находитса в <code class="docutils literal notranslate"><span class="pre">quiz</span></code></p>
+</dd>
+</dl>
+<p>возвращает <code class="docutils literal notranslate"><span class="pre">pin</span></code> и <code class="docutils literal notranslate"><span class="pre">host_key</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/{game_id}/play&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ сервера</p>
+</dd>
+</dl>
+<p>запуск игры</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/{game_id}/next&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ сервера</p>
+</dd>
+</dl>
+<p>следующий вопрос</p>
+</dd></dl>
+
+</div>
+<div class="section" id="client">
+<h2>client<a class="headerlink" href="#client" title="Ссылка на этот заголовок">¶</a></h2>
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/{game_id}/connect&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin  игры</p>
+</dd>
+<dt class="field-even">Name</dt>
+<dd class="field-even"><p>(str) имя игрока</p>
+</dd>
+</dl>
+<p>возвращает:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>если игры нет или она уже идёт <code class="docutils literal notranslate"><span class="pre">game</span></code></p></li>
+<li><p>если такое  имя уже используется <code class="docutils literal notranslate"><span class="pre">name</span></code></p></li>
+<li><p>если всё нормально <code class="docutils literal notranslate"><span class="pre">key</span></code></p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/{game_id}/validate&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin  игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ игрока</p>
+</dd>
+</dl>
+<p>Ожидание ота=вета на последний вопрос используется sleep</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/{game_id}/reply&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin  игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ игрока</p>
+</dd>
+<dt class="field-odd">Ans</dt>
+<dd class="field-odd"><p>(int) индес ответа</p>
+</dd>
+</dl>
+<p>отвечает на текущий вопрос</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get(&quot;/{game_id}/wait&quot;)</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin  игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ игрока</p>
+</dd>
+</dl>
+<p>ожидание следующего вопроса/начала игры</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get('/{game_id}/question_info')</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin  игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ игрока</p>
+</dd>
+</dl>
+<p>возвращает количество ответов и время на  его решение</p>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-name descname">&#64;app.get('/{game_id}/game_info')</code></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Game_id</dt>
+<dd class="field-odd"><p>(int) pin  игры</p>
+</dd>
+<dt class="field-even">Key</dt>
+<dd class="field-even"><p>(str) ключ игрока</p>
+</dd>
+</dl>
+<p>возвращает количество вопросов в игре</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, 9kin
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+installation
+=============
+
+server
+"""""""""
+
+install `uvicorn <https://www.uvicorn.org>`_ server and `fastapi <https://github.com/tiangolo/fastapi>`_.
+
+``pip3 install uvicorn``
+
+``pip3 install fastapi``
+
+or 
+
+``pip3 install -r server_requirements.txt``
+
+
