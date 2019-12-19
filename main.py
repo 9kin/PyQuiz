@@ -1145,7 +1145,7 @@ class HelpWindow(QWidget):
         webbrowser.open('https://github.com/9kin/PyQuiz')
 
     def doc(self):
-        webbrowser.open('https://github.com/9kin/PyQuiz')
+        webbrowser.open('https://pyquiz2.readthedocs.io/en/latest/')
 
     def back(self):
         global COORDS
