@@ -86,7 +86,12 @@
             
               <!-- Local TOC -->
               <div class="local-toc"><ul>
-<li><a class="reference internal" href="#">PyQuiz</a></li>
+<li><a class="reference internal" href="#">PyQuiz</a><ul>
+<li><a class="reference internal" href="#installation">installation</a></li>
+<li><a class="reference internal" href="#run-server">run server</a></li>
+<li><a class="reference internal" href="#doc">doc</a></li>
+</ul>
+</li>
 </ul>
 </div>
             
@@ -154,37 +159,38 @@
   <div class="section" id="pyquiz">
 <h1>PyQuiz<a class="headerlink" href="#pyquiz" title="Ссылка на этот заголовок">¶</a></h1>
 <p>PyQuiz - система проведения онлайн-викторин, написанная на Python 3 с использованием библиотек <a class="reference external" href="https://riverbankcomputing.com/software/pyqt/intro">PyQt</a>, <a class="reference external" href="https://github.com/tiangolo/fastapi">fastapi</a>.</p>
-<p>PLS: <code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">uvicorn,</span> <span class="pre">fastapi,</span> <span class="pre">PyQt5</span></code></p>
-<p>run server: <code class="docutils literal notranslate"><span class="pre">uvicorn</span> <span class="pre">server_api:app</span></code> <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000</span></code></p>
+<img alt="Documentation Status" src="https://readthedocs.org/projects/pyquiz2/badge/?version=latesttarget:https://pyquiz2.readthedocs.io/en/latest/?badge=latest" />
+<div class="section" id="installation">
+<h2>installation<a class="headerlink" href="#installation" title="Ссылка на этот заголовок">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">pip3</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span></code></p>
+</div>
+<div class="section" id="run-server">
+<h2>run server<a class="headerlink" href="#run-server" title="Ссылка на этот заголовок">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">uvicorn</span> <span class="pre">server_api:app</span></code></p>
+</div>
+<div class="section" id="doc">
+<h2>doc<a class="headerlink" href="#doc" title="Ссылка на этот заголовок">¶</a></h2>
+<p><a class="reference external" href="server_api.html">server_api.py</a></p>
 <p>Класс <a class="reference external" href="player.html">Player</a></p>
 <p>Класс <a class="reference external" href="host.html">Host</a>.</p>
 <dl class="class">
 <dt>
 <code class="sig-name descname">CreateQuizWindow():</code></dt>
-<dd><p>Окно создание вопроса поддержвает:</p>
-<ol class="arabic simple">
-<li><p>Изминение кол блоков</p></li>
-<li><p>Изминение кол воросов</p></li>
-<li><p>Изминение кол ответов</p></li>
-<li><p>Выюор правильного ответа</p></li>
-<li><p>Ограничение по времени и баламм на блок</p></li>
-</ol>
-<p>Использует:</p>
+<dd><p>Окно создание вопроса поддерживает:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">QPushButton</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QLineEdit</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QLabel</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QListWidget</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">QHBoxLayout</span></code></p></li>
+<li><p>Изменение количества блоков, воросов, ответов.</p></li>
+<li><p>Выбор правильного ответа.</p></li>
+<li><p>Ограничение по времени и баллам на блок</p></li>
 </ul>
+<p>Использует: <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code>, <code class="docutils literal notranslate"><span class="pre">QLineEdit</span></code>, <code class="docutils literal notranslate"><span class="pre">QLabel</span></code>, <code class="docutils literal notranslate"><span class="pre">QListWidget</span></code>, <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code>, <code class="docutils literal notranslate"><span class="pre">QHBoxLayout</span></code></p>
 </dd></dl>
 
 <dl class="class">
 <dt>
 <code class="sig-name descname">QuizSelectionWindow():</code></dt>
 <dd><blockquote>
-<div><p>Окно выбора для игры и создания викторины. Использует <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code>, <code class="docutils literal notranslate"><span class="pre">QListWidget</span></code>, <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code>, <code class="docutils literal notranslate"><span class="pre">QHBoxLayout</span></code>.</p>
+<div><p>Окно выбора игры и создания новой викторины.</p>
+<p>Использует: <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code>, <code class="docutils literal notranslate"><span class="pre">QListWidget</span></code>, <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code>, <code class="docutils literal notranslate"><span class="pre">QHBoxLayout</span></code>.</p>
 </div></blockquote>
 <dl class="function">
 <dt id="play">
@@ -211,11 +217,12 @@
 <dl class="class">
 <dt>
 <code class="sig-name descname">StartWindow():</code></dt>
-<dd><p>Стартовое окно используя <cite>QPushButton</cite></p>
+<dd><p>Стартовое окно.</p>
+<p>Использует: <cite>QPushButton</cite></p>
 <dl class="function">
 <dt>
 <code class="sig-name descname">open_settings(self):</code></dt>
-<dd><p>Диалог настроек <code class="docutils literal notranslate"><span class="pre">QInputDialog</span></code>.</p>
+<dd><p>Диалог настроек <code class="docutils literal notranslate"><span class="pre">QInputDialog</span></code> (настройка url).</p>
 </dd></dl>
 
 <dl class="function">
@@ -241,10 +248,11 @@
 <dl class="class">
 <dt>
 <code class="sig-name descname">HelpWindow():</code></dt>
-<dd><p>Класс в котороый описывает что тоакое данная программа. Использует <code class="docutils literal notranslate"><span class="pre">QHBoxLayout</span></code>, <code class="docutils literal notranslate"><span class="pre">QPixmap</span></code>, <code class="docutils literal notranslate"><span class="pre">Label</span></code>, <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code>, <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code>.</p>
+<dd><p>Класс в котороый описывает что такое данная программа. Использует <code class="docutils literal notranslate"><span class="pre">QHBoxLayout</span></code>, <code class="docutils literal notranslate"><span class="pre">QPixmap</span></code>, <code class="docutils literal notranslate"><span class="pre">Label</span></code>, <code class="docutils literal notranslate"><span class="pre">QPushButton</span></code>, <code class="docutils literal notranslate"><span class="pre">QVBoxLayout</span></code>.</p>
 <p>Открывает браузер <code class="docutils literal notranslate"><span class="pre">webbrowser.open('https://github.com/9kin/PyQuiz')</span></code></p>
 </dd></dl>
 
+</div>
 </div>
 
 

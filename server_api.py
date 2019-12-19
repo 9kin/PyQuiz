@@ -9,9 +9,10 @@ app = FastAPI()
 host_map = {}
 empty_hosts = list([i for i in range(100001, 1000000)])
 
-@app.get('/admin')
-def admin():
-    return host_map
+# only for debug
+#@app.get('/admin')
+#def admin():
+#    return host_map
 
 @app.get("/status")
 def status(game_id: int, key: str):
@@ -79,9 +80,7 @@ def next_game(game_id: int, key: str):
             host_map[game_id]["peoples"][key]["last"]= {"ans": -1, "res": False, "add": 0}
         return {"next"}
 
-# !!!!!!!!!!!!!!!1 raiting add
-# wait for end question and return True/False
-# #####!!!!!!!!
+
 @app.get("/{game_id}/validate")
 def validate(game_id: int, key: str):
     global host_map

@@ -3,9 +3,25 @@ PyQuiz
 
 PyQuiz - система проведения онлайн-викторин, написанная на Python 3 с использованием библиотек `PyQt <https://riverbankcomputing.com/software/pyqt/intro>`_, `fastapi <https://github.com/tiangolo/fastapi>`_.
 
-PLS: ``pip3 install uvicorn, fastapi, PyQt5``
+.. image:: https://readthedocs.org/projects/pyquiz2/badge/?version=latest
+	target: https://pyquiz2.readthedocs.io/en/latest/?badge=latest
+	:alt: Documentation Status
 
-run server: ``uvicorn server_api:app`` ``http://127.0.0.1:8000``
+installation
+"""""""""""""
+
+``pip3 install -r requirements.txt``
+
+
+run server
+""""""""""""
+
+``uvicorn server_api:app``
+
+doc
+""""
+
+`server_api.py <server_api.html>`_
 
 Класс `Player <player.html>`_
 
@@ -13,30 +29,21 @@ run server: ``uvicorn server_api:app`` ``http://127.0.0.1:8000``
 
 .. class:: CreateQuizWindow():
 
-	Окно создание вопроса поддержвает: 
+	Окно создание вопроса поддерживает: 
 
-	1. Изминение кол блоков
+	* Изменение количества блоков, воросов, ответов.
 
-	2. Изминение кол воросов
+	* Выбор правильного ответа.
 
-	3. Изминение кол ответов
+	* Ограничение по времени и баллам на блок
 
-	4. Выюор правильного ответа
-
-	5. Ограничение по времени и баламм на блок
-
-	Использует:
-
-	* ``QPushButton``
-	* ``QLineEdit``
-	* ``QLabel``
-	* ``QListWidget``
-	* ``QVBoxLayout``
-	* ``QHBoxLayout``
+	Использует: ``QPushButton``, ``QLineEdit``, ``QLabel``, ``QListWidget``, ``QVBoxLayout``, ``QHBoxLayout``
 
 .. class:: QuizSelectionWindow():
  
- 	Окно выбора для игры и создания викторины. Использует ``QPushButton``, ``QListWidget``, ``QVBoxLayout``, ``QHBoxLayout``.
+ 	Окно выбора игры и создания новой викторины. 
+
+ 	Использует: ``QPushButton``, ``QListWidget``, ``QVBoxLayout``, ``QHBoxLayout``.
 
     .. function:: play()
 	   	
@@ -52,11 +59,13 @@ run server: ``uvicorn server_api:app`` ``http://127.0.0.1:8000``
 
 .. class:: StartWindow():
 	
-	Стартовое окно используя `QPushButton`
+	Стартовое окно.
+
+	Использует: `QPushButton`
         
 	.. function:: open_settings(self):
 	    
-	    Диалог настроек ``QInputDialog``.
+	    Диалог настроек ``QInputDialog`` (настройка url).
 	    
 	.. function:: open_help():
 
@@ -73,6 +82,6 @@ run server: ``uvicorn server_api:app`` ``http://127.0.0.1:8000``
 
 .. class:: HelpWindow():
 
-    Класс в котороый описывает что тоакое данная программа. Использует ``QHBoxLayout``, ``QPixmap``, ``Label``, ``QPushButton``, ``QVBoxLayout``.
+    Класс в котороый описывает что такое данная программа. Использует ``QHBoxLayout``, ``QPixmap``, ``Label``, ``QPushButton``, ``QVBoxLayout``.
 
     Открывает браузер ``webbrowser.open('https://github.com/9kin/PyQuiz')``
