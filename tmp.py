@@ -1,59 +1,32 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget, QAction, QTabWidget,QVBoxLayout
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QWidget, QApplication, QPushButton
+from PyQt5.QtWidgets import QInputDialog
 
-class App(QMainWindow):
 
+class Example(QWidget):
     def __init__(self):
         super().__init__()
-        self.title = 'PyQt5 tabs - pythonspot.com'
-        self.left = 0
-        self.top = 0
-        self.width = 300
-        self.height = 200
-        self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
-        
-        self.table_widget = MyTableWidget(self)
-        self.setCentralWidget(self.table_widget)
-        
-        self.show()
-    
-class MyTableWidget(QWidget):
-    
-    def __init__(self, parent):
-        super(QWidget, self).__init__(parent)
-        self.layout = QVBoxLayout(self)
-        
-        # Initialize tab screen
-        self.tabs = QTabWidget()
-        self.tab1 = QWidget()
-        self.tab2 = QWidget()
-        self.tabs.resize(300,200)
-        
-        # Add tabs
-        self.tabs.addTab(self.tab1,"about")
-        self.tabs.addTab(self.tab2,"Tab 2")
-        
-        # Create first tab
-        self.tab1.layout = QVBoxLayout(self)
-        self.pushButton1 = QPushButton("PyQt5 button")
-        self.tab1.layout.addWidget(self.pushButton1)
+        self.initUI()
 
-        self.tab1.setLayout(self.tab1.layout)
-        
-        # Add tabs to widget
-        self.layout.addWidget(self.tabs)
-        self.setLayout(self.layout)
-        
-    @pyqtSlot()
-    def on_click(self):
-        print("\n")
-        for currentQTableWidgetItem in self.tableWidget.selectedItems():
-            print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
+    def initUI(self):
+        self.setGeometry(300, 300, 150, 150)
+        self.setWindowTitle('Диалоговые окна')
+
+        self.button_1 = QPushButton(self)
+        self.button_1.move(20, 40)
+        self.button_1.setText("Кнопка")
+        self.button_1.clicked.connect(self.run)
+
+        self.show()
+
+    def run(self):
+        i, okBtnPressed = QInputDialog.getText(self, "Настройки", 
+                                               "Введите url хоста")
+        if okBtnPressed:
+            self.button_1.setText(i)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = App()
+    ex = Example()
     sys.exit(app.exec_())
