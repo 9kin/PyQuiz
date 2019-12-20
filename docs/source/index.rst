@@ -7,8 +7,13 @@ PyQuiz - система проведения онлайн-викторин, на
 	target: https://pyquiz2.readthedocs.io/en/latest/?badge=latest
 	:alt: Documentation Status
 
+`git repo <https://github.com/9kin/PyQuiz>`_
+
 installation
 """""""""""""
+``git clone https://github.com/9kin/PyQuiz``
+
+``cd PyQuiz``
 
 ``pip3 install -r requirements.txt``
 
@@ -29,7 +34,7 @@ doc
 
 .. class:: CreateQuizWindow():
 
-	Окно создание вопроса поддерживает: 
+	Окно новой викторины поддерживает (сохраняет в удобном виде для чтения test_1a10e42909.json): 
 
 	* Изменение количества блоков, воросов, ответов.
 
@@ -42,6 +47,7 @@ doc
 .. class:: QuizSelectionWindow():
  
  	Окно выбора игры и создания новой викторины. 
+
 
  	Использует: ``QPushButton``, ``QListWidget``, ``QVBoxLayout``, ``QHBoxLayout``.
 

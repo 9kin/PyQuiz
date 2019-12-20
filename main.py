@@ -3,6 +3,7 @@ import json
 import sys
 import os
 import webbrowser
+import secrets
 
 from typing import List, Tuple
 from PyQt5.QtGui import QIcon, QPixmap
@@ -11,7 +12,6 @@ from PyQt5.QtCore import Qt, QTime, QTimer, QBasicTimer, QSize, QThread, pyqtSlo
 from PyQt5.QtGui import QIcon
 from PyQt5.Qt import QEventLoop
 from constants import *
-from config_stuff import *
 from PyQt5 import QtTest
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -927,9 +927,6 @@ class CreateQuizWindow(QWidget):
             self.showMsg(f"Длина названия викторины должна быть не меньше {QUIZ_NAME_LEN_RANGE.start}, "
                          f"но меньше {QUIZ_NAME_LEN_RANGE.stop}")
             return
-        i = 1
-        while os.path.isfile(QUIZ_SAVE_DIR + str(i)):
-            i += 1
         quiz_json = {"name": quiz_name}
         cur = 0
         for time, pts, questions in self.blocks:
@@ -942,8 +939,13 @@ class CreateQuizWindow(QWidget):
                     "true": right_answer
                 }
                 cur += 1
+         # QUIZ_SAVE_DIR
+        file_name_preffix = secrets.token_hex(5)
+        while os.path.isfile(os.path.join(QUIZ_SAVE_DIR, file_name_preffix)):
+            file_name_preffix = secrets.token_hex(5)
         # https://stackoverflow.com/questions/18337407/saving-utf-8-texts-in-json-dumps-as-utf8-not-as-u-escape-sequence
-        with open(QUIZ_SAVE_DIR + str(i), 'w', encoding='utf8') as json_file:
+        file_path = os.path.join(QUIZ_SAVE_DIR, quiz_name + '_' + file_name_preffix + '.json')
+        with open(file_path, 'w', encoding='utf8') as json_file:
             json.dump(quiz_json, json_file, ensure_ascii=False, sort_keys=True, indent=4)
         self.exit()
 
@@ -995,12 +997,17 @@ class QuizSelectionWindow(QWidget):
 
         self.quizzes = []
         i = 1
-        while os.path.exists(QUIZ_SAVE_DIR + str(i)):
-            with open(QUIZ_SAVE_DIR + str(i), "r", encoding="utf8") as f:
-                data = json.load(f)
-                self.quizzes_list.addItem(data["name"])
-                self.quizzes.append(data)
-            i += 1
+
+        mypath = os.path.abspath('.quizzes')
+        onlyfiles = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
+
+        for file in onlyfiles:
+            filename, file_extension = os.path.splitext(file)
+            if file_extension == '.json':
+                with open(os.path.join(mypath, file), "r", encoding="utf8") as f:
+                    data = json.load(f)
+                    self.quizzes_list.addItem(data["name"])
+                    self.quizzes.append(data)
 
     def play(self):
         if len(self.quizzes_list.selectedIndexes()) == 0:
