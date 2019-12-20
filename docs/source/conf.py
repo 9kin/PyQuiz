@@ -69,7 +69,7 @@ html_theme_options = {
 }
 
 
-html_logo = "static/quiz.png"
+html_logo = 'static/quiz.png'
 
 
-html_favicon = "static/quiz.ico"
+html_favicon = 'static/quiz.ico'

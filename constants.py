@@ -1,3 +1,7 @@
+QUIZ_STYLE_SHEET = 'QWidget {background-color: #3C3F41; color: #BBBBBB;}'
+QBUTTON_STYLE = 'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}'
+QUIZ_HELP_TEXT = 'PyQuiz v 1.0.0\nPyQuiz - система проведения онлайн-викторин написанная на Python 3 с использованием библиотек PyQt, fastapi.\n9kin and Avevad'
+
 QUIZ_NAME_LEN_LEN = 2
 QUIZ_NAME_LEN_RANGE = range(1, 10 ** QUIZ_NAME_LEN_LEN)
 
@@ -33,7 +37,7 @@ PLAYERS_NUM_RANGE = range(PLAYERS_NUM_MIN, 10 ** PLAYERS_NUM_LEN)
 GAME_ID_LEN = 6
 GAME_ID_RANGE = range(10 ** (GAME_ID_LEN - 1), 10 ** GAME_ID_LEN)
 
-QUIZ_SAVE_DIR = ".quizzes/"
+QUIZ_SAVE_DIR = '.quizzes/'
 
 ###
 

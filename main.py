@@ -4,16 +4,24 @@ import sys
 import os
 import webbrowser
 import secrets
+from constants import *
 
 from typing import List, Tuple
+
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, QTime, QTimer, QBasicTimer, QSize, QThread, pyqtSlot
+from PyQt5.QtCore import (Qt, QTime, QTimer, QBasicTimer,
+                          QSize, QThread, pyqtSlot)
 from PyQt5.QtGui import QIcon
 from PyQt5.Qt import QEventLoop
-from constants import *
 from PyQt5 import QtTest
 from PyQt5.QtCore import QThread, pyqtSignal
+
+from PyQt5.QtWidgets import (QApplication, QWidget, QPushButton,
+                             QLabel, QLineEdit, QTableWidget, QInputDialog,
+                             QTableWidgetItem, QProgressBar, QVBoxLayout, QDialog,
+                             QSpinBox, QHBoxLayout, QGridLayout, QFileDialog,
+                             QListWidget, QMessageBox)
 
 import sip
 
@@ -21,12 +29,14 @@ COORDS = [200, 200]
 
 URL = 'http://127.0.0.1:8000'
 
+
 def showMsg(s, type=QMessageBox.Critical):
     msg = QMessageBox()
     msg.setIcon(type)
     msg.setText(s)
-    msg.setWindowTitle("pyQuiz")
+    msg.setWindowTitle('pyQuiz')
     msg.exec_()
+
 
 class PlayerThread(QThread):
     Signal = pyqtSignal(list)
@@ -36,7 +46,6 @@ class PlayerThread(QThread):
         self.window = window
         self.game = game
         self.name = name
-
 
     def run(self):
         self.window.API = api.PlayerAPI(URL, self.game, self.name)
@@ -52,10 +61,14 @@ class PlayerThread(QThread):
             self.Signal.emit([self.window.answer_window, info[0]])
             QtTest.QTest.qWait(info[1] * 1000)
             res = self.window.API.validate()
-            self.Signal.emit([self.window.true_false_window, res["valid"], res["place"], res['score']])
+            self.Signal.emit([self.window.true_false_window,
+                              res['valid'],
+                              res['place'],
+                              res['score']])
             if i + 1 != question_cnt:
                 self.window.API.wait()
-        QtTest.QTest.qWait(2000) # 2 s
+        QtTest.QTest.qWait(2000)  # 2 s
+
 
 class PlayerGameWindow(QWidget):
     def __init__(self):
@@ -69,7 +82,8 @@ class PlayerGameWindow(QWidget):
         self.waiting_window_box = None
         self.connect_window_box = None
         self.setWindowTitle('pyQuiz')
-        self.connect_window_connect, self.connect_window_name, self.connect_window_pin = None, None, None
+        self.connect_window_connect, self.connect_window_name = None, None
+        self.connect_window_pin = None
         self.connect_window_exit, self.connect_window_connect = None, None
         self.connect_window_status = None
         self.buttons = []
@@ -80,11 +94,10 @@ class PlayerGameWindow(QWidget):
 
         self.table = None
         self.setStyleSheet(
-            'QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+            QUIZ_STYLE_SHEET)
         self.setFixedSize(300, 300)
 
         self.connect_window()
-
 
     def delete_answer_windgets(self):
         for button in self.buttons:
@@ -162,7 +175,7 @@ class PlayerGameWindow(QWidget):
         self.waiting_window_title.resize(300, 100)
         self.waiting_window_title.setText('Ожидание')
         self.waiting_window_title.setStyleSheet(
-            'QLabel {font-size: 50px;font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel {font-size: 50px;font-weight: bold;background-color: #3C3F41;color: #BBBBBB;}')
         self.waiting_window_title.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
         self.waiting_window_box.addWidget(self.waiting_window_title)
         self.setLayout(self.waiting_window_box)
@@ -181,7 +194,7 @@ class PlayerGameWindow(QWidget):
         self.true_false_statistic = QLabel()
         self.true_false_statistic.setText(f'{points} очков, {place} место')
         self.true_false_statistic.setStyleSheet(
-            'QLabel {font-size: 20px; font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel{font-size: 20px;font-weight:bold;background-color: #3C3F41;color:#BBBBBB;}')
         self.true_false_statistic.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
         self.true_false_vbox.addWidget(self.true_false_label)
         self.true_false_vbox.addWidget(self.true_false_statistic)
@@ -192,7 +205,7 @@ class PlayerGameWindow(QWidget):
     def connect_window(self):
         self.delete_all_windgets()
         self.connect_window_box = QVBoxLayout()
-        self.connect_window_box.setContentsMargins(0,0,0,0)
+        self.connect_window_box.setContentsMargins(0, 0, 0, 0)
 
         self.connect_window_pin = QLineEdit()
         self.connect_window_pin.setPlaceholderText('ID игры')
@@ -203,19 +216,20 @@ class PlayerGameWindow(QWidget):
         self.connect_window_name = QLineEdit()
         self.connect_window_name.setPlaceholderText('Ваше имя')
         self.connect_window_name.setText(load_config()[CONFIG_OPTION_NAME])
-        self.connect_window_name.setStyleSheet("""QLineEdit {font-size: 40px; background-color: #3C3F41; color: #BBBBBB;}""")
+        self.connect_window_name.setStyleSheet(
+            """QLineEdit {font-size: 40px; background-color: #3C3F41; color: #BBBBBB;}""")
 
         self.connect_window_connect = QPushButton()
         self.connect_window_connect.setText('подключиться')
         self.connect_window_connect.setStyleSheet(
-            'QPushButton {font-size: 40px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+            'QPushButton{font-size:40px;text-align:center;background-color:#3C3F41;color:#BBBBBB;}')
         self.connect_window_connect.clicked.connect(self.connect)
 
         self.connect_window_exit = QPushButton()
         self.connect_window_exit.clicked.connect(self.exit)
         self.connect_window_exit.setText('Назад')
         self.connect_window_exit.setStyleSheet(
-            'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+            'QPushButton{font-size:30px;text-align:center;background-color:#3C3F41;color:#BBBBBB;}')
 
         self.connect_window_status = QLabel(self.error)
         self.connect_window_status.setStyleSheet('QLabel {color: red; font-size: 14px;}')
@@ -237,7 +251,7 @@ class PlayerGameWindow(QWidget):
     def game_end(self):
         global COORDS
         COORDS = [self.x(), self.y()]
-        self.start_window =  StartWindow()
+        self.start_window = StartWindow()
         self.start_window.show()
         self.close()
 
@@ -266,7 +280,7 @@ class PlayerGameWindow(QWidget):
         game = self.connect_window_pin.text()
         name = self.connect_window_name.text()
         if not game.isnumeric():
-            showMsg("Неправильный ID игры")
+            showMsg('Неправильный ID игры')
             return
         game = int(game)
         self.thread_signal(game, name)
@@ -274,11 +288,11 @@ class PlayerGameWindow(QWidget):
     def exit(self):
         global COORDS
         COORDS = [self.x(), self.y()]
-        self.start_window =  StartWindow()
+        self.start_window = StartWindow()
         self.start_window.show()
         self.close()
 
-####################### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 class HostThread(QThread):
     Signal = pyqtSignal(list)
 
@@ -287,35 +301,37 @@ class HostThread(QThread):
         self.host, self.window = host, window
 
     def run(self):
-        
         self.window.API = api.HostAPI(self.host, self.window.quiz)
-        id_ =  str(self.window.API.id)
+        id_ = str(self.window.API.id)
         self.window.curent_window = self.window.person_waiting_window
         while self.window.curent_window == self.window.person_waiting_window:
-            self.Signal.emit([self.window.person_waiting_window, self.window.name, id_, self.window.API.get_peoples()])
+            self.Signal.emit([self.window.person_waiting_window,
+                              self.window.name,
+                              id_,
+                              self.window.API.get_peoples()])
             c = 0
             while c < 20 and self.window.curent_window == self.window.person_waiting_window:
-               QtTest.QTest.qWait(50) # 2 s
-               c += 1
+                QtTest.QTest.qWait(50)  # 2 s
+                c += 1
 
         res = self.window.API.get_info()
         cnt = len(res['quiz'])
         self.window.API.play()
         cur = 0
         for i in range(cnt):
-            curent_question = res["quiz"][str(cur)]
+            curent_question = res['quiz'][str(cur)]
             self.Signal.emit([self.window.question_window,
-                curent_question["question"],
-                curent_question["answers"],
-                curent_question["time"]]
-            )
+                              curent_question['question'],
+                              curent_question['answers'],
+                              curent_question['time']]
+                             )
             while self.window.curent_window == self.window.question_window:
                 pass
             self.Signal.emit([self.window.true_answer_window,
-                curent_question["question"],
-                curent_question["answers"][curent_question["true"]],
-                curent_question["true"]]
-            )
+                              curent_question['question'],
+                              curent_question['answers'][curent_question['true']],
+                              curent_question['true']]
+                             )
             while self.window.curent_window == self.window.true_answer_window:
                 pass
             self.Signal.emit([self.window.raiting_window, self.window.API.get_raiting()])
@@ -323,6 +339,7 @@ class HostThread(QThread):
                 pass
             cur += 1
             self.window.API.next()
+
 
 # raiting question answer person_waiting
 class Host(QWidget):
@@ -334,7 +351,7 @@ class Host(QWidget):
         self.name = quiz['name']
         del quiz['name']
         self.quiz = quiz
-        self.curent_window =None
+        self.curent_window = None
         self.API = None
         self.question_button = None
         self.timer = None
@@ -343,9 +360,12 @@ class Host(QWidget):
         self.answers = []
         self.question_box, self.question_label, self.question_pbar = None, None, None
         # true_answer
-        self.true_answer_box, self.true_answer_button, self.true_answer_question, self.true_answer_label, self.true_answer_answer = None, None, None, None, None
+        self.true_answer_box, self.true_answer_button, self.true_answer_question = None, None, None
+        self.true_answer_label, self.true_answer_answer = None, None
         # person_waiting
-        self.person_waiting_box, self.person_waiting_title, self.person_waiting_pin, self.person_waiting_table, self.person_waiting_button = None, None, None, None, None
+        self.person_waiting_pin = None
+        self.person_waiting_box, self.person_waiting_title = None, None
+        self.person_waiting_table, self.person_waiting_button = None, None
         self.person_waiting_box = None
         self.thread_signal(URL)
 
@@ -380,7 +400,6 @@ class Host(QWidget):
             self.question_button.deleteLater()
             self.question_button = None
 
-
         if self.question_pbar is not None:
             self.question_pbar.deleteLater()
             self.question_pbar = None
@@ -401,7 +420,6 @@ class Host(QWidget):
         if self.true_answer_button is not None:
             self.true_answer_button.deleteLater()
             self.true_answer_button = None
-
 
     def delete_person_waiting_widgets(self):
         if self.person_waiting_table is not None:
@@ -442,9 +460,9 @@ class Host(QWidget):
         self.raiting_table.setColumnWidth(1, 120)
         self.raiting_table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.setStyleSheet(
-            'QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+            QUIZ_STYLE_SHEET)
         self.raiting_box.addWidget(self.raiting_table)
-        self.raiting_button = QPushButton("next")
+        self.raiting_button = QPushButton('next')
         self.raiting_button.clicked.connect(self.to_question)
         self.raiting_box.addWidget(self.raiting_button)
         self.setLayout(self.raiting_box)
@@ -457,7 +475,7 @@ class Host(QWidget):
         self.question_label = QLabel()
         self.question_label.setText(question)
         self.question_label.setStyleSheet(
-            'QLabel {font-size: 50px; font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel{font-size:50px;font-weight:bold;background-color:#3C3F41;color:#BBBBBB;}')
         self.question_label.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
         self.question_box.addWidget(self.question_label)
 
@@ -492,7 +510,7 @@ class Host(QWidget):
         self.timer.start(100, self)
         self.question_box.addWidget(self.question_pbar)
         self.setLayout(self.question_box)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
         self.setFixedSize(1000, 480)
 
     def timerEvent(self, e):
@@ -517,12 +535,12 @@ class Host(QWidget):
         self.true_answer_question = QLabel()
         self.true_answer_question.setText(question)
         self.true_answer_question.setStyleSheet(
-            'QLabel {font-size: 50px; font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel{font-size:50px;font-weight:bold;background-color:#3C3F41;color:#BBBBBB;}')
         self.true_answer_question.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
 
         self.true_answer_label = QLabel('Правильный ответ:')
         self.true_answer_label.setStyleSheet(
-            'QLabel {font-size: 40px; font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel{font-size:50px;font-weight:bold;background-color:#3C3F41;color:#BBBBBB;}')
         self.true_answer_label.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
         self.true_answer_label.setFixedHeight(50)
 
@@ -535,12 +553,12 @@ class Host(QWidget):
         self.true_answer_box.addWidget(self.true_answer_question)
         self.true_answer_box.addWidget(self.true_answer_label)
         self.true_answer_box.addWidget(self.true_answer_answer)
-        self.true_answer_button = QPushButton("next")
+        self.true_answer_button = QPushButton('next')
         self.true_answer_button.clicked.connect(self.to_raiting)
         self.true_answer_box.addWidget(self.true_answer_button)
         self.setLayout(self.true_answer_box)
         self.setStyleSheet(
-            'QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+            QUIZ_STYLE_SHEET)
         self.setFixedSize(1000, 480)
 
     def to_raiting(self):
@@ -571,13 +589,13 @@ class Host(QWidget):
         self.person_waiting_title.setText(quiz_title)
 
         self.person_waiting_title.setStyleSheet(
-            'QLabel {font-size: 30px;font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel{font-size:30px;font-weight:bold;background-color:#3C3F41;color:#BBBBBB;}')
         self.person_waiting_title.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
 
         self.person_waiting_pin = QLabel()
         self.person_waiting_pin.setText(pin)
         self.person_waiting_pin.setStyleSheet(
-            'QLabel {font-size: 30px;font-weight: bold; background-color: #3C3F41; color: #BBBBBB;}')
+            'QLabel{font-size:30px;font-weight:bold;background-color:#3C3F41;color:#BBBBBB;}')
         self.person_waiting_pin.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
 
         self.person_waiting_button = QPushButton('start game')
@@ -590,7 +608,7 @@ class Host(QWidget):
 
         self.person_waiting_table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.setLayout(self.person_waiting_box)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
         self.setFixedSize(300, 300)
 
     def play(self):
@@ -622,12 +640,14 @@ class Host(QWidget):
         self.quiz_selection_window = QuizSelectionWindow()
         self.quiz_selection_window.show()
         self.close()
+
+
 #######################
 
 class CreateQuizWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.DEFAULT_BLOCK = (10, 100, [("Вопрос №1", ["Ответ №1", "Ответ №2"], 0)])
+        self.DEFAULT_BLOCK = (10, 100, [('Вопрос №1', ['Ответ №1', 'Ответ №2'], 0)])
         self.blocks = [self.DEFAULT_BLOCK]
         self.questions = self.blocks[0][2]
         self.cur_block = 0
@@ -690,12 +710,12 @@ class CreateQuizWindow(QWidget):
 
         self.exit_button.setText('Назад')
         self.exit_button.setStyleSheet(
-            'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+            'QPushButton{font-size:30px;text-align:center;background-color:#3C3F41;color:#BBBBBB;}')
 
         self.save_button = QPushButton()
         self.save_button.setText('Сохранить')
         self.save_button.setStyleSheet(
-            'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+            'QPushButton{font-size:30px;text-align:center;background-color:#3C3F41;color:#BBBBBB;}')
         self.save_button.clicked.connect(self.save)
 
         self.add_option_button = QPushButton()
@@ -707,7 +727,6 @@ class CreateQuizWindow(QWidget):
         self.delete_option_button.clicked.connect(self.delOption)
 
         vbox = QVBoxLayout()
-
 
         menu_layout = QHBoxLayout()
         menu_layout.addWidget(self.prev_block_button)
@@ -753,7 +772,7 @@ class CreateQuizWindow(QWidget):
         self.restoreBlock()
 
         self.setLayout(vbox)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
         self.setFixedSize(500, 500)
 
     def blockNavUpdate(self):
@@ -764,13 +783,13 @@ class CreateQuizWindow(QWidget):
         self.prev_block_button.setEnabled(self.cur_block > 0)
         self.next_block_button.setEnabled(self.cur_block < QUIZ_BLOCKS_NUM_RANGE.stop - 1)
         self.delete_block_button.setEnabled(len(self.blocks) > 1)
-        self.block_name_label.setText(f"Блок № {self.cur_block + 1}")
+        self.block_name_label.setText(f'Блок № {self.cur_block + 1}')
 
     def showMsg(self, s, type=QMessageBox.Critical):
         msg = QMessageBox()
         msg.setIcon(type)
         msg.setText(s)
-        msg.setWindowTitle("pyQuiz")
+        msg.setWindowTitle('pyQuiz')
         msg.exec_()
 
     def saveBlock(self):
@@ -780,24 +799,26 @@ class CreateQuizWindow(QWidget):
         time = self.block_time_limit.text()
         points = self.block_points.text()
         if not time.isnumeric():
-            self.showMsg("Время на вопрос должно быть целым числом!")
+            self.showMsg('Время на вопрос должно быть целым числом!')
             return False
         time = int(time)
         if time not in QUIZ_BLOCK_TIME_RANGE:
-            self.showMsg(f"Время на вопрос должно быть не меньше {QUIZ_BLOCK_TIME_RANGE.start}, "
-                         f"но меньше {QUIZ_BLOCK_TIME_RANGE.stop}")
+            self.showMsg(f'Время на вопрос должно быть не меньше {QUIZ_BLOCK_TIME_RANGE.start}, '
+                         f'но меньше {QUIZ_BLOCK_TIME_RANGE.stop}')
             return False
         if not points.isnumeric():
-            self.showMsg("Кол-во очков за вопрос должно быть целым числом!")
+            self.showMsg('Кол-во очков за вопрос должно быть целым числом!')
             return False
         points = int(points)
         if points not in QUIZ_BLOCK_POINTS_RANGE:
-            self.showMsg(f"Кол-во очков за вопрос должно быть не меньше {QUIZ_BLOCK_POINTS_RANGE.start}, "
-                         f"но меньше {QUIZ_BLOCK_POINTS_RANGE.stop}")
+            self.showMsg(
+                f'Кол-во очков за вопрос должно быть не меньше {QUIZ_BLOCK_POINTS_RANGE.start}, '
+                f'но меньше {QUIZ_BLOCK_POINTS_RANGE.stop}')
             return False
         if len(self.questions) not in QUIZ_QUESTIONS_NUM_RANGE:
-            self.showMsg(f"Кол-во вопросов в блоке должно быть не меньше {QUIZ_QUESTIONS_NUM_RANGE.start}, "
-                         f"но меньше {QUIZ_QUESTIONS_NUM_RANGE.stop}")
+            self.showMsg(
+                f'Кол-во вопросов в блоке должно быть не меньше {QUIZ_QUESTIONS_NUM_RANGE.start}, '
+                f'но меньше {QUIZ_QUESTIONS_NUM_RANGE.stop}')
             return False
         self.blocks[self.cur_block] = (time, points, self.questions)
         return True
@@ -812,7 +833,7 @@ class CreateQuizWindow(QWidget):
         self.questions = block[2][:]
         self.cur_question = -1
         self.questions_list.clearSelection()
-        self.question_text_edit.setText("")
+        self.question_text_edit.setText('')
         self.options_list.clear()
         self.cur_question = -1
 
@@ -853,18 +874,21 @@ class CreateQuizWindow(QWidget):
         self.restoreQuestion()
 
     def addQuestion(self):
-        question_text, okBtnPressed = QInputDialog.getText(self, "Создание вопроса", "Введите текст вопроса")
+        question_text, okBtnPressed = QInputDialog.getText(self,
+                                                           'Создание вопроса',
+                                                           'Введите текст вопроса')
         if not okBtnPressed:
             return
         if len(question_text) not in QUIZ_QUESTION_TEXT_LEN_RANGE:
-            self.showMsg(f"Длина вопроса должна быть не меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.start}, "
-                         f"но меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.stop}", QMessageBox.Critical)
+            self.showMsg(
+                f'Длина вопроса должна быть не меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.start}, '
+                f'но меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.stop}', QMessageBox.Critical)
             return
         i = -1
         if len(self.questions_list.selectedIndexes()) > 0:
             i = self.questions_list.selectedIndexes()[0].row()
         i += 1
-        self.questions.insert(i, (question_text, ["Ответ №1", "Ответ №2"], 0))
+        self.questions.insert(i, (question_text, ['Ответ №1', 'Ответ №2'], 0))
         self.questions_list.insertItem(i, question_text)
         self.delete_question_button.setEnabled(True)
 
@@ -879,19 +903,21 @@ class CreateQuizWindow(QWidget):
     def saveQuestion(self):
         question_text = self.question_text_edit.text()
         if len(question_text) not in QUIZ_QUESTION_TEXT_LEN_RANGE:
-            self.showMsg(f"Длина текста вопроса должна быть не меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.start}, "
-                         f"но меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.stop}", QMessageBox.Critical)
+            self.showMsg(
+                f'Длина текста вопроса должна быть не меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.start}, '
+                f'но меньше {QUIZ_QUESTION_TEXT_LEN_RANGE.stop}', QMessageBox.Critical)
             return False
         self.questions_list.item(self.cur_question).setText(question_text)
         options = []
         for i in range(len(self.options_list)):
             options.append(self.options_list.item(i).text())
         if len(options) not in QUIZ_OPTIONS_NUM_RANGE:
-            self.showMsg(f"Кол-во ответов на вопрос должно быть не меньше {QUIZ_OPTIONS_NUM_RANGE.start}, "
-                         f"но меньше {QUIZ_OPTIONS_NUM_RANGE.stop}", QMessageBox.Critical)
+            self.showMsg(
+                f'Кол-во ответов на вопрос должно быть не меньше {QUIZ_OPTIONS_NUM_RANGE.start}, '
+                f'но меньше {QUIZ_OPTIONS_NUM_RANGE.stop}', QMessageBox.Critical)
             return False
         if len(self.options_list.selectedIndexes()) != 1:
-            self.showMsg(f"Не выбран правильный ответ!", QMessageBox.Critical)
+            self.showMsg(f'Не выбран правильный ответ!', QMessageBox.Critical)
             return False
         right_answer = self.options_list.selectedIndexes()[0].row()
         self.questions[self.cur_question] = (question_text, options, right_answer)
@@ -906,12 +932,14 @@ class CreateQuizWindow(QWidget):
         self.options_list.item(question[2]).setSelected(True)
 
     def addOption(self):
-        option_text, okBtnPressed = QInputDialog.getText(self, "Создание ответа", "Введите текст ответа")
+        option_text, okBtnPressed = QInputDialog.getText(self,
+                                                         'Создание ответа',
+                                                         'Введите текст ответа')
         if not okBtnPressed:
             return
         if len(option_text) not in QUIZ_OPTION_TEXT_LEN_RANGE:
-            self.showMsg(f"Длина ответа должна быть не меньше {QUIZ_OPTION_TEXT_LEN_RANGE.start}, "
-                         f"но меньше {QUIZ_OPTION_TEXT_LEN_RANGE.stop}", QMessageBox.Critical)
+            self.showMsg(f'Длина ответа должна быть не меньше {QUIZ_OPTION_TEXT_LEN_RANGE.start}, '
+                         f'но меньше {QUIZ_OPTION_TEXT_LEN_RANGE.stop}', QMessageBox.Critical)
             return
         self.options_list.addItem(option_text)
 
@@ -924,22 +952,23 @@ class CreateQuizWindow(QWidget):
             return
         quiz_name = self.title_edit.text()
         if len(quiz_name) not in QUIZ_NAME_LEN_RANGE:
-            self.showMsg(f"Длина названия викторины должна быть не меньше {QUIZ_NAME_LEN_RANGE.start}, "
-                         f"но меньше {QUIZ_NAME_LEN_RANGE.stop}")
+            self.showMsg(
+                f'Длина названия викторины должна быть не меньше {QUIZ_NAME_LEN_RANGE.start}, '
+                f'но меньше {QUIZ_NAME_LEN_RANGE.stop}')
             return
-        quiz_json = {"name": quiz_name}
+        quiz_json = {'name': quiz_name}
         cur = 0
         for time, pts, questions in self.blocks:
             for text, options, right_answer in questions:
                 quiz_json[str(cur)] = {
-                    "time": time,
-                    "score": pts,
-                    "question": text,
-                    "answers": list(options),
-                    "true": right_answer
+                    'time': time,
+                    'score': pts,
+                    'question': text,
+                    'answers': list(options),
+                    'true': right_answer
                 }
                 cur += 1
-         # QUIZ_SAVE_DIR
+        # QUIZ_SAVE_DIR
         file_name_preffix = secrets.token_hex(5)
         while os.path.isfile(os.path.join(QUIZ_SAVE_DIR, file_name_preffix)):
             file_name_preffix = secrets.token_hex(5)
@@ -956,6 +985,7 @@ class CreateQuizWindow(QWidget):
         self.create_game_window.show()
         self.close()
 
+
 #############
 class QuizSelectionWindow(QWidget):
     def __init__(self):
@@ -968,20 +998,17 @@ class QuizSelectionWindow(QWidget):
         self.setWindowTitle('pyQuiz')
         self.create_game = QPushButton('Cоздать')
         self.create_game.clicked.connect(self.create_new_game)
-        self.create_game.setStyleSheet(
-            'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+        self.create_game.setStyleSheet(QBUTTON_STYLE)
 
         self.play_game = QPushButton('Играть')
-        self.play_game.setStyleSheet(
-            'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+        self.play_game.setStyleSheet(QBUTTON_STYLE)
         self.play_game.clicked.connect(self.play)
 
         self.exit_button = QPushButton()
         self.exit_button.clicked.connect(self.exit)
 
         self.exit_button.setText('Назад')
-        self.exit_button.setStyleSheet(
-            'QPushButton {font-size: 30px; text-align: center; background-color: #3C3F41; color: #BBBBBB;}')
+        self.exit_button.setStyleSheet(QBUTTON_STYLE)
 
         self.quizzes_list = QListWidget()
         vbox = QVBoxLayout()
@@ -992,21 +1019,19 @@ class QuizSelectionWindow(QWidget):
         vbox.addLayout(hbox)
         vbox.addWidget(self.exit_button)
         self.setLayout(vbox)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
         self.setFixedSize(300, 300)
 
         self.quizzes = []
-        i = 1
-
-        mypath = os.path.abspath('.quizzes')
+        mypath = os.path.abspath(QUIZ_SAVE_DIR)
         onlyfiles = [f for f in os.listdir(mypath) if os.path.isfile(os.path.join(mypath, f))]
 
         for file in onlyfiles:
             filename, file_extension = os.path.splitext(file)
             if file_extension == '.json':
-                with open(os.path.join(mypath, file), "r", encoding="utf8") as f:
+                with open(os.path.join(mypath, file), 'r', encoding='utf8') as f:
                     data = json.load(f)
-                    self.quizzes_list.addItem(data["name"])
+                    self.quizzes_list.addItem(data['name'])
                     self.quizzes.append(data)
 
     def play(self):
@@ -1018,7 +1043,6 @@ class QuizSelectionWindow(QWidget):
         self.host_window = Host(self.quizzes[cur])
         self.host_window.show()
         self.close()
-
 
     def exit(self):
         global COORDS
@@ -1033,6 +1057,7 @@ class QuizSelectionWindow(QWidget):
         self.create_game_window = CreateQuizWindow()
         self.create_game_window.show()
         self.close()
+
 
 class StartWindow(QWidget):
     def __init__(self):
@@ -1065,29 +1090,30 @@ class StartWindow(QWidget):
 
         self.settngs_btn.clicked.connect(self.open_settings)
         self.help_btn.clicked.connect(self.open_help)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
         self.setFixedSize(300, 300)
 
-        self.play_btn.setStyleSheet("""QPushButton {font-size: 40px; background-color: #3C3F41; color: #BBBBBB;}""")
-        self.host_btn.setStyleSheet('QPushButton {font-size: 40px; background-color: #3C3F41; color: #BBBBBB;}')
+        self.play_btn.setStyleSheet(
+            'QPushButton{font-size:40px;background-color:#3C3F41;color:#BBBBBB;}')
+        self.host_btn.setStyleSheet(
+            'QPushButton{font-size:40px;background-color:#3C3F41;color:#BBBBBB;}')
 
         self.title_label = QLabel(self)
         self.title_label.resize(300, 100)
         self.title_label.setText('PyQuiz')
-        self.title_label.setStyleSheet(
-            """QLabel {font-size: 40px;font-weight: bold;  }""")
+        self.title_label.setStyleSheet('QLabel {font-size: 40px;font-weight: bold;}')
         self.title_label.lower()
         self.title_label.setAlignment(Qt.AlignCenter | Qt.AlignHCenter)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
 
         self.play_btn.clicked.connect(self.start_game)
         self.host_btn.clicked.connect(self.create_game)
 
-
     def open_settings(self):
         global URL
-        new_url, okBtnPressed = QInputDialog.getText(self, "Настройки", 
-                                               "Введите url хоста")
+        new_url, okBtnPressed = QInputDialog.getText(self,
+                                                     'Настройки',
+                                                     'Введите url хоста')
         if okBtnPressed:
             URL = new_url
 
@@ -1112,6 +1138,7 @@ class StartWindow(QWidget):
         self.create_game_window.show()
         self.close()
 
+
 class HelpWindow(QWidget):
     def __init__(self):
         super().__init__()
@@ -1120,7 +1147,7 @@ class HelpWindow(QWidget):
     def initUI(self):
         self.move(*COORDS)
         self.setWindowTitle('pyQuiz')
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
         self.setFixedSize(300, 300)
         hbox = QHBoxLayout()
         pixmap = QPixmap('assets/quiz.png')
@@ -1128,10 +1155,10 @@ class HelpWindow(QWidget):
         label = QLabel()
         label.setPixmap(pixmap)
         about = QLabel()
-        about.setText('PyQuiz v 1.0.0\nPyQuiz - система проведения онлайн-викторин написанная на Python 3 с использованием библиотек PyQt, fastapi.\n9kin and Avevad')
-        
+        about.setText(QUIZ_HELP_TEXT)
+
         about.setWordWrap(True)
-        about.setStyleSheet("""QLabel {font-size: 12px; background-color: #3C3F41; color: #BBBBBB;}  """)
+        about.setStyleSheet('QLabel{font-size:12px;background-color:#3C3F41;color:#BBBBBB;}')
         self.repo_btn = QPushButton('PyQuiz repo')
         self.doc_btn = QPushButton('PyQuiz doc')
         self.back_btn = QPushButton('back')
@@ -1146,7 +1173,7 @@ class HelpWindow(QWidget):
         self.doc_btn.clicked.connect(self.doc)
         self.back_btn.clicked.connect(self.back)
         self.setLayout(vbox)
-        self.setStyleSheet('QWidget {background-color: #3C3F41; color: #BBBBBB;}')
+        self.setStyleSheet(QUIZ_STYLE_SHEET)
 
     def repo(self):
         webbrowser.open('https://github.com/9kin/PyQuiz')
@@ -1161,11 +1188,9 @@ class HelpWindow(QWidget):
         self.start_window_window.show()
         self.close()
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    
     ex = StartWindow()
-    #ex = HelpWindow()
-    
     ex.show()
     sys.exit(app.exec())
