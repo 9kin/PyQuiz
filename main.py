@@ -215,7 +215,7 @@ class PlayerGameWindow(QWidget):
 
         self.connect_window_name = QLineEdit()
         self.connect_window_name.setPlaceholderText('Ваше имя')
-        self.connect_window_name.setText(load_config()[CONFIG_OPTION_NAME])
+        self.connect_window_name.setText('')
         self.connect_window_name.setStyleSheet(
             """QLineEdit {font-size: 40px; background-color: #3C3F41; color: #BBBBBB;}""")
 
