@@ -57,7 +57,8 @@ class HostAPI:
 
 class PlayerAPI:
     def __init__(self, url, id_, name):
-        res = requests.get(f'{url}/{id_}/connect?name={name}').json()
+        con_url = f"{url}/{id_}/connect?{urllib.parse.urlencode({'name': name})}"
+        res = requests.get(con_url).json()
         self.error = None
         if res == {'detail': 'name'}:
             self.error = 'name is too short/long or 🚹 already uses it'

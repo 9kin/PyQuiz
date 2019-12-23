@@ -279,6 +279,9 @@ class PlayerGameWindow(QWidget):
     def connect(self):
         game = self.connect_window_pin.text()
         name = self.connect_window_name.text()
+        if len(name) == 0:
+            showMsg('Неправильное имя')
+            return 
         if not game.isnumeric():
             showMsg('Неправильный ID игры')
             return
