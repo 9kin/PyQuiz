@@ -10,11 +10,6 @@ host_map = {}
 empty_hosts = list([i for i in range(100001, 1000000)])
 
 
-# only for debug
-#@app.get('/admin')
-#def admin():
-#    return host_map
-
 @app.get('/status')
 def status(game_id: int, key: str):
     if game_id not in host_map or host_map[game_id]['key'] != key:
